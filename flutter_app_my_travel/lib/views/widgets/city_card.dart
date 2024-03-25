@@ -17,7 +17,7 @@ class CityCard extends StatelessWidget {
           children: <Widget>[
             Ink.image(
               fit: BoxFit.cover,
-              image: AssetImage(city.image),
+              image: NetworkImage(city.image),
               child: InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/city', arguments: city.name);

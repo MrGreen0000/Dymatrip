@@ -4,6 +4,7 @@ import 'package:my_travel/models/city_model.dart';
 import 'package:my_travel/providers/city_provider.dart';
 import 'package:my_travel/views/widgets/city_card.dart';
 import 'package:my_travel/widgets/dyma_drawer.dart';
+import 'package:my_travel/widgets/dyma_loader.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
@@ -26,16 +27,17 @@ class _HomeViewState extends State<HomeView> {
       drawer: const DymaDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          ...cities.map(
-            (city) {
-              return CityCard(
-                city: city,
-              );
-            },
-          ).toList()
-        ]),
+        child: cities.isNotEmpty
+            ? Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                ...cities.map(
+                  (city) {
+                    return CityCard(
+                      city: city,
+                    );
+                  },
+                ).toList()
+              ])
+            : const DymaLoader(),
       ),
     );
   }

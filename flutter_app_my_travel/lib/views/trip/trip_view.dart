@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_travel/models/city_model.dart';
-import 'package:my_travel/models/trip_model.dart';
 import 'package:my_travel/providers/city_provider.dart';
-import 'package:my_travel/providers/trip_provider.dart';
 import 'package:my_travel/views/trip/widgets/trip_activities.dart';
 import 'package:my_travel/views/trip/widgets/trip_city_bar.dart';
 import 'package:provider/provider.dart';
