@@ -45,6 +45,7 @@ class _CityViewState extends State<CityView> {
   void initState() {
     super.initState();
     mytrip = Trip(
+      id: '',
       activities: [],
       city: '',
       date: null,

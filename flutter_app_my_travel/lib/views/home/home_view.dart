@@ -27,17 +27,17 @@ class _HomeViewState extends State<HomeView> {
       drawer: const DymaDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: cities.isNotEmpty
-            ? Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                ...cities.map(
-                  (city) {
-                    return CityCard(
-                      city: city,
-                    );
-                  },
-                ).toList()
-              ])
-            : const DymaLoader(),
+        child: RefreshIndicator(
+          onRefresh: Provider.of<CityProvider>(context).fetchData,
+          child: cities.isNotEmpty
+              ? ListView.builder(
+                  itemCount: cities.length,
+                  itemBuilder: (_, i) => CityCard(
+                    city: cities[i],
+                  ),
+                )
+              : const DymaLoader(),
+        ),
       ),
     );
   }

@@ -20,10 +20,12 @@ class DymaTrip extends StatefulWidget {
 
 class _DymaTripState extends State<DymaTrip> {
   final CityProvider cityProvider = CityProvider();
+  final TripProvider tripProvider = TripProvider();
 
   @override
   void initState() {
-    // cityProvider.fetchData();
+    cityProvider.fetchData();
+    tripProvider.fetchData();
     super.initState();
   }
 
@@ -32,7 +34,7 @@ class _DymaTripState extends State<DymaTrip> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: cityProvider),
-        ChangeNotifierProvider.value(value: TripProvider()),
+        ChangeNotifierProvider.value(value: tripProvider),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

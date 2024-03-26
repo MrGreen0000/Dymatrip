@@ -3,6 +3,7 @@ import 'package:my_travel/models/trip_model.dart';
 import 'package:my_travel/providers/trip_provider.dart';
 import 'package:my_travel/views/trips/widgets/trip_list.dart';
 import 'package:my_travel/widgets/dyma_drawer.dart';
+import 'package:my_travel/widgets/dyma_loader.dart';
 import 'package:provider/provider.dart';
 
 class TripsView extends StatelessWidget {
@@ -32,18 +33,20 @@ class TripsView extends StatelessWidget {
           ),
         ),
         drawer: const DymaDrawer(),
-        body: TabBarView(
-          children: [
-            TripList(
-                trips: trips
-                    .where((trip) => DateTime.now().isBefore(trip.date!))
-                    .toList()),
-            TripList(
-                trips: trips
-                    .where((trip) => DateTime.now().isAfter(trip.date!))
-                    .toList()),
-          ],
-        ),
+        body: trips.isNotEmpty
+            ? TabBarView(
+                children: [
+                  TripList(
+                      trips: trips
+                          .where((trip) => DateTime.now().isBefore(trip.date!))
+                          .toList()),
+                  TripList(
+                      trips: trips
+                          .where((trip) => DateTime.now().isAfter(trip.date!))
+                          .toList()),
+                ],
+              )
+            : DymaLoader(),
       ),
     );
   }
