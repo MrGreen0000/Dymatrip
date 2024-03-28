@@ -17,27 +17,80 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<City> cities = Provider.of<CityProvider>(context).cities;
+    CityProvider cityProvider = Provider.of<CityProvider>(context);
+    List<City> filteredCities =
+        cityProvider.getFilteredCities(searchController.text);
     return Scaffold(
       appBar: AppBar(
         title: const Text('dymatrip'),
       ),
       drawer: const DymaDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: RefreshIndicator(
-          onRefresh: Provider.of<CityProvider>(context).fetchData,
-          child: cities.isNotEmpty
-              ? ListView.builder(
-                  itemCount: cities.length,
-                  itemBuilder: (_, i) => CityCard(
-                    city: cities[i],
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchController,
+                      decoration: const InputDecoration(
+                          hintText: 'Rechercher une ville',
+                          prefixIcon: Icon(Icons.search)),
+                      onSubmitted: (value) {
+                        setState(() {});
+                      },
+                    ),
                   ),
-                )
-              : const DymaLoader(),
-        ),
+                  IconButton(
+                    onPressed: (() => setState(
+                          () => searchController.clear(),
+                        )),
+                    icon: const Icon(Icons.clear),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: RefreshIndicator(
+                onRefresh: Provider.of<CityProvider>(context).fetchData,
+                child: cityProvider.isLoading
+                    ? const DymaLoader()
+                    : filteredCities.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: filteredCities.length,
+                            itemBuilder: (_, i) => CityCard(
+                              city: filteredCities[i],
+                            ),
+                          )
+                        : const Text('Aucun resultat'),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:my_travel/providers/city_provider.dart';
 import 'package:my_travel/providers/trip_provider.dart';
-import 'package:my_travel/views/not-found/not_found.dart';
+import 'package:my_travel/views/activity_form/activity_form_view.dart';
+import 'package:my_travel/views/not_found/not_found.dart';
 import 'package:my_travel/views/city/city_view.dart';
 import 'package:my_travel/views/home/home_view.dart';
 import 'package:my_travel/views/trip/trip_view.dart';
@@ -43,6 +44,7 @@ class _DymaTripState extends State<DymaTrip> {
           CityView.routeName: (_) => const CityView(),
           TripsView.routeName: (_) => const TripsView(),
           TripView.routeName: (_) => const TripView(),
+          ActivityFormView.routeName: (_) => ActivityFormView()
         },
         onUnknownRoute: (_) =>
             MaterialPageRoute(builder: (_) => const NotFound()),

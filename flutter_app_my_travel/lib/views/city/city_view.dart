@@ -4,6 +4,7 @@ import 'package:my_travel/models/city_model.dart';
 import 'package:my_travel/models/trip_model.dart';
 import 'package:my_travel/providers/city_provider.dart';
 import 'package:my_travel/providers/trip_provider.dart';
+import 'package:my_travel/views/activity_form/activity_form_view.dart';
 import 'package:my_travel/views/home/home_view.dart';
 import 'package:my_travel/views/widgets/activity_list.dart';
 import 'package:my_travel/views/widgets/trip_activity_list.dart';
@@ -45,7 +46,6 @@ class _CityViewState extends State<CityView> {
   void initState() {
     super.initState();
     mytrip = Trip(
-      id: '',
       activities: [],
       city: '',
       date: null,
@@ -169,6 +169,12 @@ class _CityViewState extends State<CityView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Organisation du voyage'),
+        actions: [
+          IconButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, ActivityFormView.routeName),
+              icon: const Icon(Icons.add))
+        ],
       ),
       drawer: const DymaDrawer(),
       body: Container(

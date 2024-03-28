@@ -44,10 +44,6 @@ class TripActivityList extends StatelessWidget {
                       ),
                     ),
                     key: ValueKey(activity.id),
-                    onDismissed: ((_) {
-                      Provider.of<TripProvider>(context, listen: false)
-                          .setActivityToDone(activity);
-                    }),
                     child: Card(
                       child: ListTile(
                         title: Text(
@@ -55,6 +51,12 @@ class TripActivityList extends StatelessWidget {
                         ),
                       ),
                     ),
+                    confirmDismiss: (_) {
+                      return Provider.of<TripProvider>(context, listen: false)
+                          .updateTrip(trip, activity.id!)
+                          .then((_) => true)
+                          .catchError((_) => false);
+                    },
                   )
                 : Card(
                     child: ListTile(

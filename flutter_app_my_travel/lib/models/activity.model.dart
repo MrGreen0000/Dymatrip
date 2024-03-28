@@ -1,3 +1,5 @@
+enum ActivityStatus { ongoing, done }
+
 class Activity {
   String? id;
   String name;
@@ -27,6 +29,15 @@ class Activity {
   String toString() {
     return 'Activity{id: $id, name: $name, image: $image, city: $city, price: $price, status: $status}';
   }
-}
 
-enum ActivityStatus { ongoing, done }
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+      'image': image,
+      'city': city,
+      'price': price,
+      'status': status == ActivityStatus.ongoing ? 0 : 1,
+    };
+  }
+}

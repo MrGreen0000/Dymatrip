@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_travel/models/trip_model.dart';
 import 'package:my_travel/providers/trip_provider.dart';
 import 'package:my_travel/views/trips/widgets/trip_list.dart';
 import 'package:my_travel/widgets/dyma_drawer.dart';
@@ -15,7 +14,7 @@ class TripsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Trip> trips = Provider.of<TripProvider>(context).trips;
+    TripProvider tripProvider = Provider.of<TripProvider>(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -33,20 +32,27 @@ class TripsView extends StatelessWidget {
           ),
         ),
         drawer: const DymaDrawer(),
-        body: trips.isNotEmpty
-            ? TabBarView(
-                children: [
-                  TripList(
-                      trips: trips
-                          .where((trip) => DateTime.now().isBefore(trip.date!))
-                          .toList()),
-                  TripList(
-                      trips: trips
-                          .where((trip) => DateTime.now().isAfter(trip.date!))
-                          .toList()),
-                ],
-              )
-            : DymaLoader(),
+        body: tripProvider.isLoading != true
+            ? tripProvider.trips.isNotEmpty
+                ? TabBarView(
+                    children: [
+                      TripList(
+                          trips: tripProvider.trips
+                              .where(
+                                  (trip) => DateTime.now().isBefore(trip.date!))
+                              .toList()),
+                      TripList(
+                          trips: tripProvider.trips
+                              .where(
+                                  (trip) => DateTime.now().isAfter(trip.date!))
+                              .toList()),
+                    ],
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    child: const Text("Aucun voyage pour le moment."),
+                  )
+            : const DymaLoader(),
       ),
     );
   }
