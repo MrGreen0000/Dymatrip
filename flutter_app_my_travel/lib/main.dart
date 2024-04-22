@@ -44,7 +44,7 @@ class _DymaTripState extends State<DymaTrip> {
           CityView.routeName: (_) => const CityView(),
           TripsView.routeName: (_) => const TripsView(),
           TripView.routeName: (_) => const TripView(),
-          ActivityFormView.routeName: (_) => ActivityFormView()
+          ActivityFormView.routeName: (_) => const ActivityFormView()
         },
         onUnknownRoute: (_) =>
             MaterialPageRoute(builder: (_) => const NotFound()),

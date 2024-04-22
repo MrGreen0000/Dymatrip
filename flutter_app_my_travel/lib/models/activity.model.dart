@@ -6,13 +6,16 @@ class Activity {
   String image;
   String city;
   double price;
+  LocationActivity? location;
   ActivityStatus status;
+
   Activity({
     this.id,
     required this.name,
     required this.city,
     required this.image,
     required this.price,
+    this.location,
     this.status = ActivityStatus.ongoing,
   });
 
@@ -31,13 +34,24 @@ class Activity {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      '_id': id,
+    Map<String, dynamic> value = {
       'name': name,
       'image': image,
       'city': city,
       'price': price,
       'status': status == ActivityStatus.ongoing ? 0 : 1,
     };
+    if (id != null) {
+      value['id'] = id;
+    }
+    return value;
   }
+}
+
+class LocationActivity {
+  String? address;
+  double? longitude;
+  double? latitude;
+
+  LocationActivity({this.address, this.longitude, this.latitude});
 }

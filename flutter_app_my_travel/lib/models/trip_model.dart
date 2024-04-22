@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:my_travel/models/activity.model.dart';
 
 class Trip {

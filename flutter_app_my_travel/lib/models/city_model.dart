@@ -5,6 +5,7 @@ class City {
   String image;
   String name;
   List<Activity> activities;
+
   City({
     this.id,
     required this.image,

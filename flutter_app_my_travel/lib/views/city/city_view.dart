@@ -171,8 +171,9 @@ class _CityViewState extends State<CityView> {
         title: const Text('Organisation du voyage'),
         actions: [
           IconButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, ActivityFormView.routeName),
+              onPressed: () => Navigator.pushNamed(
+                  context, ActivityFormView.routeName,
+                  arguments: cityName),
               icon: const Icon(Icons.add))
         ],
       ),
@@ -186,6 +187,7 @@ class _CityViewState extends State<CityView> {
               myTrip: mytrip,
               cityName: city.name,
               amount: amount,
+              cityImage: city.image,
             ),
             Expanded(
                 child: index == 0
