@@ -6,8 +6,8 @@ class Activity {
   String image;
   String city;
   double price;
-  LocationActivity? location;
   ActivityStatus status;
+  LocationActivity? location;
 
   Activity({
     this.id,
@@ -25,13 +25,18 @@ class Activity {
         image = json['image'],
         city = json['city'],
         price = json['price'].toDouble(),
+        location = LocationActivity(
+          address: json['address'],
+          latitude: json['latitude'],
+          longitude: json['longitude'],
+        ),
         status =
             json['status'] == 0 ? ActivityStatus.ongoing : ActivityStatus.done;
 
-  @override
-  String toString() {
-    return 'Activity{id: $id, name: $name, image: $image, city: $city, price: $price, status: $status}';
-  }
+  // @override
+  // String toString() {
+  //   return 'Activity{id: $id, name: $name, image: $image, city: $city, price: $price, status: $status}';
+  // }
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> value = {
@@ -39,6 +44,9 @@ class Activity {
       'image': image,
       'city': city,
       'price': price,
+      'address': location?.address,
+      'longitude': location?.longitude,
+      'latitude': location?.latitude,
       'status': status == ActivityStatus.ongoing ? 0 : 1,
     };
     if (id != null) {
@@ -53,5 +61,9 @@ class LocationActivity {
   double? longitude;
   double? latitude;
 
-  LocationActivity({this.address, this.longitude, this.latitude});
+  LocationActivity({
+    this.address,
+    this.longitude,
+    this.latitude,
+  });
 }

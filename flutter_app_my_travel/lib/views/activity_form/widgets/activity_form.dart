@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
+import 'package:my_travel/apis/google_api.dart';
 import 'package:my_travel/models/activity.model.dart';
 import 'package:my_travel/providers/city_provider.dart';
 import 'package:my_travel/views/activity_form/widgets/activity_%20form_image_picker.dart';
@@ -20,7 +22,7 @@ class _ActivityFormState extends State<ActivityForm> {
   late FocusNode _urlFocusNode;
   late FocusNode _addressFocusNode;
   late Activity _newActivity;
-  late String _nameInputAsync;
+  late String? _nameInputAsync;
   final TextEditingController _urlController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   bool _isLoading = false;
@@ -63,7 +65,43 @@ class _ActivityFormState extends State<ActivityForm> {
     });
   }
 
-  void _getCurrentLocation() async {}
+  void _getCurrentLocation() async {
+    try {
+      Location location = Location();
+      LocationData userLocation;
+      bool serviceEnabled;
+      PermissionStatus permissionGranted;
+
+      serviceEnabled = await location.serviceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await location.requestService();
+        if (!serviceEnabled) {
+          return;
+        }
+      }
+      permissionGranted = await location.hasPermission();
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != PermissionStatus.granted) {
+          return;
+        }
+      }
+
+      userLocation = await location.getLocation();
+
+      String address = await getAddressFromLatLng(
+          lat: userLocation.latitude!, lng: userLocation.longitude!);
+      _newActivity.location = LocationActivity(
+          address: address,
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude);
+      setState(() {
+        _addressController.text = address;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   @override
   void dispose() {
@@ -77,12 +115,16 @@ class _ActivityFormState extends State<ActivityForm> {
 
   Future<void> submitForm() async {
     try {
-      CityProvider cityProvider =
-          Provider.of<CityProvider>(context, listen: false);
+      CityProvider cityProvider = Provider.of<CityProvider>(
+        context,
+        listen: false,
+      );
       _formKey.currentState!.save();
       setState(() => _isLoading = true);
-      _nameInputAsync = await cityProvider.verifyIfActivityIsUnique(
-          widget.cityName, _newActivity.name);
+      _nameInputAsync = await cityProvider.verifyIfActivityNameIsUnique(
+        widget.cityName,
+        _newActivity.name,
+      );
       if (form.validate()) {
         await cityProvider.addActivityToCity(_newActivity);
         if (mounted) Navigator.pop(context);
@@ -108,7 +150,7 @@ class _ActivityFormState extends State<ActivityForm> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Remplissez le nom';
-                    } else if (_nameInputAsync != null) {
+                    } else {
                       return _nameInputAsync;
                     }
                     return null;
@@ -170,7 +212,7 @@ class _ActivityFormState extends State<ActivityForm> {
                   children: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('anuuler'),
+                      child: const Text('Annuler'),
                     ),
                     ElevatedButton(
                       onPressed: _isLoading ? null : submitForm,

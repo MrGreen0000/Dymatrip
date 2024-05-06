@@ -39,7 +39,8 @@ dependencies:
   http: ^1.1.2
   image_picker: ^1.0.7
   path: ^1.8.3
-  location: ^4.4.0
+  location: ^6.0.1
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:

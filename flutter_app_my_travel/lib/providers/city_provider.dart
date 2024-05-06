@@ -64,7 +64,7 @@ class CityProvider with ChangeNotifier {
     }
   }
 
-  Future<dynamic> verifyIfActivityIsUnique(
+  Future<dynamic> verifyIfActivityNameIsUnique(
       String cityName, String activityName) async {
     try {
       City city = getCityByName(cityName);
