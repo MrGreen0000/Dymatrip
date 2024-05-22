@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.my_travel">
+    package="com.najiMouflih.projetDyamatripFlutter">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="my_travel"
+        android:label="dymatrip"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyC5DSqt4kRA2To_r-cbWUQMbUycYZZp1Ro"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
